@@ -31,3 +31,5 @@ The project and task Pbtype can be referred below: \
 * Calculate the total task for a project.
 * Calculate the total project for a company.
 * Calculate the total project for an employee.
+
+> NOTE: DO NOT commit changes directly into the master branch.
