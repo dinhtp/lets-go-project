@@ -8,7 +8,6 @@ import (
 )
 
 func Migrate(db *gorm.DB) error {
-
     m := gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
         {
             ID:      "20211207091900",

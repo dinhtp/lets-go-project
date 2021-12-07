@@ -6,10 +6,10 @@ import (
 
 func Seed(db *gorm.DB) error {
     err := CreateFakeProject(db)
-    err1 := CreateFakeTask(db)
     if nil != err {
         return err
     }
+    err1 := CreateFakeTask(db)
     if nil != err1 {
         return err1
     }

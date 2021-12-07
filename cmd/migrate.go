@@ -16,7 +16,7 @@ import (
 var migrateCmd = &cobra.Command{
     Use:   "migrate",
     Short: "go project service migrate command",
-    Run:   runMigrationCommand,
+    Run:   runMigrateCommand,
 }
 
 func init() {
@@ -27,7 +27,7 @@ func init() {
     _ = viper.BindPFlag("mysqlDsn", migrateCmd.Flags().Lookup("mysqlDsn"))
 }
 
-func runMigrationCommand(cmd *cobra.Command, args []string) {
+func runMigrateCommand(cmd *cobra.Command, args []string) {
     mysqlDsn := viper.GetString("mysqlDsn")
     orm, err := gorm.Open(mysql.Open(mysqlDsn), &gorm.Config{})
 

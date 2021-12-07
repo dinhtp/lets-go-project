@@ -84,13 +84,11 @@ func runRestCommand(cmd *cobra.Command, args []string) {
 
 func initializeGatewayService(ctx context.Context, gw *runtime.ServeMux, endpoint string, opts []grpc.DialOption) {
     projectGwErr := ppb.RegisterProjectServiceHandlerFromEndpoint(ctx, gw, endpoint, opts)
-    taskGwErr := tpb.RegisterTaskServiceHandlerFromEndpoint(ctx, gw, endpoint, opts)
-
     if nil != projectGwErr {
         fmt.Println(projectGwErr)
         os.Exit(1)
     }
-
+    taskGwErr := tpb.RegisterTaskServiceHandlerFromEndpoint(ctx, gw, endpoint, opts)
     if nil != taskGwErr {
         fmt.Println(taskGwErr)
         os.Exit(1)

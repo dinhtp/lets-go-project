@@ -5,7 +5,6 @@ import (
 )
 
 func Version20211207091900(tx *gorm.DB) error {
-
     type EmployeeProject struct {
         gorm.Model
         ProjectID  uint
