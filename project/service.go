@@ -4,11 +4,10 @@ import (
     "context"
     "strconv"
 
-    "gorm.io/gorm"
     "github.com/gogo/protobuf/types"
+    "gorm.io/gorm"
 
     pb "github.com/dinhtp/lets-go-pbtype/project"
-
 )
 
 type Service struct {
@@ -50,4 +49,3 @@ func (s Service) List(ctx context.Context, r *pb.ListProjectRequest) (*pb.ListPr
 func (s Service) Delete(ctx context.Context, r *pb.OneProjectRequest) (*types.Empty, error) {
     return &types.Empty{}, nil
 }
-

@@ -7,8 +7,8 @@ import (
     pb "github.com/dinhtp/lets-go-pbtype/project"
 )
 
-func validateOne(r *pb.OneProjectRequest) error{
-    if r.GetId() ==  "" {
+func validateOne(r *pb.OneProjectRequest) error {
+    if r.GetId() == "" {
         return status.Error(codes.InvalidArgument, "Project ID is required")
     }
 

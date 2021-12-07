@@ -3,8 +3,8 @@ package task
 import (
     "context"
 
-    "gorm.io/gorm"
     "github.com/gogo/protobuf/types"
+    "gorm.io/gorm"
 
     pb "github.com/dinhtp/lets-go-pbtype/task"
 )
@@ -26,7 +26,7 @@ func (s Service) Update(ctx context.Context, r *pb.Task) (*pb.Task, error) {
     return &pb.Task{}, nil
 }
 
-func (s Service) Get(ctx context.Context, r *pb.OneTaskRequest) (*pb.Task,error) {
+func (s Service) Get(ctx context.Context, r *pb.OneTaskRequest) (*pb.Task, error) {
 
     return &pb.Task{}, nil
 }

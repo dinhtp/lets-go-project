@@ -3,8 +3,8 @@ package project
 import (
     "fmt"
 
-    "github.com/dinhtp/lets-go-project/model"
     pb "github.com/dinhtp/lets-go-pbtype/project"
+    "github.com/dinhtp/lets-go-project/model"
 )
 
 func prepareDataToResponse(p *model.Project) *pb.Project {

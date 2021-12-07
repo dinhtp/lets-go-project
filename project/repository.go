@@ -26,4 +26,3 @@ func (r *Repository) FindOne(id int) (*model.Project, error) {
 
     return &result, nil
 }
-
