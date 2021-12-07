@@ -81,7 +81,6 @@ func runGrpcCommand(cmd *cobra.Command, args []string) {
         "service": "go-project-service",
         "type":    "grpc",
     }).Info("go project service gracefully shutdowns")
-
 }
 
 func initializeDbConnection(mysqlDsnField string, c chan os.Signal, mysqlChan chan *gorm.DB) {
