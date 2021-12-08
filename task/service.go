@@ -69,13 +69,13 @@ func (s Service) List(ctx context.Context, r *pb.ListTaskRequest) (*pb.ListTaskR
         return nil, err
     }
 
-    task, count, err := NewRepository(s.db).ListAll(r)
+    tasks, count, err := NewRepository(s.db).ListAll(r)
 
     if nil != err {
         return nil, err
     }
-    for i := range task {
-        list = append(list, prepareDataToResponse(task[i]))
+    for _,task := range tasks {
+        list = append(list, prepareDataToResponse(task))
     }
 
     return &pb.ListTaskResponse{

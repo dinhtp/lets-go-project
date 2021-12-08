@@ -119,16 +119,16 @@ func (r *Repository) countTotalTask(id int) (map[uint]uint32, error) {
 
     query = query.Find(&results)
 
-    for _, re := range results {
-        totalCount[re.ProjectID] = re.TotalTask
-    }
-
     if err := query.Error; nil != err {
         return totalCount, err
     }
 
     if nil == results {
         return totalCount, nil
+    }
+
+    for _, re := range results {
+        totalCount[re.ProjectID] = re.TotalTask
     }
 
     return totalCount, nil

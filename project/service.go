@@ -73,15 +73,15 @@ func (s Service) List(ctx context.Context, r *pb.ListProjectRequest) (*pb.ListPr
         return nil, err
     }
 
-    project, count, err := NewRepository(s.db).ListAll(r)
+    projects, count, err := NewRepository(s.db).ListAll(r)
     mapTask, err := NewRepository(s.db).countTotalTask(0)
     if nil != err {
         return nil, err
     }
 
-    for i := range project {
-        projectData := prepareDataToResponse(project[i])
-        projectData.TotalTask = mapTask[project[i].ID]
+    for _,project := range projects {
+        projectData := prepareDataToResponse(project)
+        projectData.TotalTask = mapTask[project.ID]
         list = append(list, projectData)
     }
 
