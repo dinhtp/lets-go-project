@@ -32,9 +32,7 @@ func (r *Repository) FindOne(id int) (*model.Task, error) {
 }
 
 func (r *Repository) DeleteOne(id int) error {
-    var result model.Task
-
-    query := r.db.Model(&model.Task{}).Where("id=?", id).Delete(&result)
+    query := r.db.Delete(&model.Task{}, "id=?", id)
     if err := query.Error; nil != err {
         return err
     }

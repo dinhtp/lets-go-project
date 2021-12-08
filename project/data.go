@@ -2,8 +2,8 @@ package project
 
 import (
     "fmt"
-    "time"
     "strconv"
+    "time"
 
     "gorm.io/gorm"
 
@@ -19,16 +19,16 @@ func prepareDataToResponse(p *model.Project) *pb.Project {
         Code:        p.Code,
         Status:      p.Status,
         Description: p.Description,
-        TotalTask:   "0",
+        TotalTask:   0,
     }
     return data
 }
 
 func prepareDataToRequest(p *pb.Project) *model.Project {
-    companyid, _ := strconv.Atoi(p.GetCompanyId())
+    companyId, _ := strconv.Atoi(p.GetCompanyId())
     return &model.Project{
         Model:       gorm.Model{},
-        CompanyID:   uint(companyid),
+        CompanyID:   uint(companyId),
         Name:        p.Name,
         Code:        p.Code,
         Status:      p.Status,
@@ -37,13 +37,11 @@ func prepareDataToRequest(p *pb.Project) *model.Project {
 }
 
 func getModel(id uint, c *model.Project) *model.Project {
-    c.ID = id
     return &model.Project{
         Model: gorm.Model{
-            ID:        id,
+            ID:        c.ID,
             CreatedAt: time.Time{},
             UpdatedAt: time.Time{},
-            DeletedAt: gorm.DeletedAt{},
         },
         CompanyID:   c.CompanyID,
         Name:        c.Name,

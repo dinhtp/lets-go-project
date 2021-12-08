@@ -11,3 +11,8 @@ type Project struct {
     Description string
     Task        []Task
 }
+
+type ProjectTotalTask struct {
+    ProjectID     uint
+    TotalTask uint32
+}

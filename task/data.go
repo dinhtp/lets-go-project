@@ -2,8 +2,8 @@ package task
 
 import (
     "fmt"
-    "time"
     "strconv"
+    "time"
 
     "gorm.io/gorm"
 
@@ -12,14 +12,13 @@ import (
 )
 
 func prepareDataToResponse(t *model.Task) *pb.Task {
-    data := &pb.Task{
+     return &pb.Task{
         Id:          fmt.Sprintf("%d", t.ID),
         ProjectId:   fmt.Sprintf("%d", t.ProjectID),
         Name:        t.Name,
         Status:      t.Status,
         Description: t.Description,
     }
-    return data
 }
 
 func prepareDataToRequest(p *pb.Task) *model.Task {
@@ -34,14 +33,11 @@ func prepareDataToRequest(p *pb.Task) *model.Task {
 }
 
 func getModel(id uint, c *model.Task) *model.Task {
-    c.ID = id
-
     return &model.Task{
         Model: gorm.Model{
-            ID:        id,
+            ID:        c.ID,
             CreatedAt: time.Time{},
             UpdatedAt: time.Time{},
-            DeletedAt: gorm.DeletedAt{},
         },
         ProjectID:   c.ProjectID,
         Name:        c.Name,

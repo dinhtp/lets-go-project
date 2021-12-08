@@ -2,13 +2,12 @@ package project
 
 import (
     "fmt"
+    "gorm.io/gorm"
     "strconv"
     "strings"
 
-    "gorm.io/gorm"
-
-    "github.com/dinhtp/lets-go-project/model"
     pb "github.com/dinhtp/lets-go-pbtype/project"
+    "github.com/dinhtp/lets-go-project/model"
 )
 
 type Repository struct {
@@ -32,9 +31,12 @@ func (r *Repository) FindOne(id int) (*model.Project, error) {
 }
 
 func (r *Repository) DeleteOne(id int) error {
-    var result model.Project
-
-    query := r.db.Model(&model.Project{}).Where("id=?", id).Delete(&result)
+    result := &model.Project{
+        Model:       gorm.Model{
+            ID:        uint(id),
+        },
+    }
+    query := r.db.Delete(result)
     if err := query.Error; nil != err {
         return err
     }
@@ -106,4 +108,32 @@ func (r *Repository) ListAll(req *pb.ListProjectRequest) ([]*model.Project, int6
     }
 
     return list, count, nil
+}
+
+func (r *Repository) countTotalTask(id int) (map[uint]uint32, error) {
+    var results []*model.ProjectTotalTask
+    totalCount := map[uint]uint32{}
+
+    query := r.db.Model(&model.Task{}).Select("project_id, COUNT(id) AS total_task").
+        Group("project_id")
+
+    if id != 0{
+        query = query.Where("project_id=?",id)
+    }
+
+    query = query.Find(&results)
+
+    for _, re := range results {
+        totalCount[re.ProjectID] = re.TotalTask
+    }
+
+    if err := query.Error; nil != err {
+        return totalCount, err
+    }
+
+    if nil == results {
+        return totalCount, nil
+    }
+
+    return totalCount, nil
 }
