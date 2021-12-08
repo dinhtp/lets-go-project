@@ -133,3 +133,14 @@ func (r *Repository) countTotalTask(id int) (map[uint]uint32, error) {
 
     return totalCount, nil
 }
+
+func (r *Repository) listAllEmployee(id int) ([]uint32, error) {
+    var listIdEmployee []uint32
+
+    query := r.db.Model(&model.Employee_Project{}).Select("employee_id").Where("project_id = ?", id).Find(&listIdEmployee)
+    if err := query.Error; nil != err {
+        return nil, err
+    }
+
+    return listIdEmployee, nil
+}

@@ -19,8 +19,11 @@ import (
 
     ppb "github.com/dinhtp/lets-go-pbtype/project"
     tpb "github.com/dinhtp/lets-go-pbtype/task"
+    epb "github.com/dinhtp/lets-go-pbtype/employee_project"
+    "github.com/dinhtp/lets-go-project/employee_project"
     "github.com/dinhtp/lets-go-project/project"
     "github.com/dinhtp/lets-go-project/task"
+
 )
 
 var grpcCmd = &cobra.Command{
@@ -108,9 +111,11 @@ func initializeDbConnection(mysqlDsnField string, c chan os.Signal, mysqlChan ch
 func initializeServices(orm *gorm.DB, grpcServer *grpc.Server) *grpc.Server {
     projectService := project.NewService(orm)
     taskService := task.NewService(orm)
+    employeeProjectService := employee_project.NewService(orm)
 
     ppb.RegisterProjectServiceServer(grpcServer, projectService)
     tpb.RegisterTaskServiceServer(grpcServer, taskService)
+    epb.RegisterEmployeeServiceServer(grpcServer, employeeProjectService)
 
     return grpcServer
 }

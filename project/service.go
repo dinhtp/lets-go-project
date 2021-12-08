@@ -56,13 +56,15 @@ func (s Service) Get(ctx context.Context, r *pb.OneProjectRequest) (*pb.Project,
     id, _ := strconv.Atoi(r.GetId())
     project, err := NewRepository(s.db).FindOne(id)
     mapTask, err := NewRepository(s.db).countTotalTask(id)
-
-    projectData := prepareDataToResponse(project)
-    projectData.TotalTask = mapTask[uint(id)]
+    list, err := NewRepository(s.db).listAllEmployee(id)
 
     if nil != err {
         return nil, err
     }
+
+    projectData := prepareDataToResponse(project)
+    projectData.TotalTask = mapTask[uint(id)]
+    projectData.EmployeeIdInProject = list
 
     return projectData, nil
 }
@@ -79,7 +81,7 @@ func (s Service) List(ctx context.Context, r *pb.ListProjectRequest) (*pb.ListPr
         return nil, err
     }
 
-    for _,project := range projects {
+    for _, project := range projects {
         projectData := prepareDataToResponse(project)
         projectData.TotalTask = mapTask[project.ID]
         list = append(list, projectData)
