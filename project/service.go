@@ -55,10 +55,10 @@ func (s Service) Get(ctx context.Context, r *pb.OneProjectRequest) (*pb.Project,
 
     id, _ := strconv.Atoi(r.GetId())
     project, err := NewRepository(s.db).FindOne(id)
-    mapEmployee, err := NewRepository(s.db).countTotalTask(id)
+    mapTask, err := NewRepository(s.db).countTotalTask(id)
 
     projectData := prepareDataToResponse(project)
-    projectData.TotalTask = mapEmployee[uint(id)]
+    projectData.TotalTask = mapTask[uint(id)]
 
     if nil != err {
         return nil, err
