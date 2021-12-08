@@ -79,10 +79,10 @@ func (s Service) List(ctx context.Context, r *pb.ListProjectRequest) (*pb.ListPr
         return nil, err
     }
 
-    for i := range project{
-        companyData := prepareDataToResponse(project[i])
-        companyData.TotalTask = mapTask[project[i].ID]
-        list = append(list, companyData)
+    for i := range project {
+        projectData := prepareDataToResponse(project[i])
+        projectData.TotalTask = mapTask[project[i].ID]
+        list = append(list, projectData)
     }
 
     return &pb.ListProjectResponse{

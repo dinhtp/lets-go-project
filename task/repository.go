@@ -41,7 +41,8 @@ func (r *Repository) DeleteOne(id int) error {
 }
 
 func (r *Repository) UpdateOne(id int, p *model.Task) (*model.Task, error) {
-    query := r.db.Model(&model.Task{}).Where("id=?", id).UpdateColumns(getModel(uint(id), p))
+    p.ID = uint(id)
+    query := r.db.Model(&model.Task{}).Where("id=?", id).UpdateColumns(getModel(p))
 
     if err := query.Error; nil != err {
         return nil, err

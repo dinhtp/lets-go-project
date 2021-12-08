@@ -13,6 +13,6 @@ type Project struct {
 }
 
 type ProjectTotalTask struct {
-    ProjectID     uint
+    ProjectID uint
     TotalTask uint32
 }

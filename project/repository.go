@@ -31,12 +31,7 @@ func (r *Repository) FindOne(id int) (*model.Project, error) {
 }
 
 func (r *Repository) DeleteOne(id int) error {
-    result := &model.Project{
-        Model:       gorm.Model{
-            ID:        uint(id),
-        },
-    }
-    query := r.db.Delete(result)
+    query := r.db.Delete(&model.Project{}, "id=?", id)
     if err := query.Error; nil != err {
         return err
     }
@@ -45,7 +40,8 @@ func (r *Repository) DeleteOne(id int) error {
 }
 
 func (r *Repository) UpdateOne(id int, p *model.Project) (*model.Project, error) {
-    query := r.db.Model(&model.Project{}).Where("id=?", id).UpdateColumns(getModel(uint(id), p))
+    p.ID = uint(id)
+    query := r.db.Model(&model.Project{}).Where("id=?", id).UpdateColumns(getModel(p))
 
     if err := query.Error; nil != err {
         return nil, err
@@ -117,8 +113,8 @@ func (r *Repository) countTotalTask(id int) (map[uint]uint32, error) {
     query := r.db.Model(&model.Task{}).Select("project_id, COUNT(id) AS total_task").
         Group("project_id")
 
-    if id != 0{
-        query = query.Where("project_id=?",id)
+    if id != 0 {
+        query = query.Where("project_id=?", id)
     }
 
     query = query.Find(&results)

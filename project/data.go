@@ -12,16 +12,14 @@ import (
 )
 
 func prepareDataToResponse(p *model.Project) *pb.Project {
-    data := &pb.Project{
+    return &pb.Project{
         Id:          fmt.Sprintf("%d", p.ID),
         CompanyId:   fmt.Sprintf("%d", p.CompanyID),
         Name:        p.Name,
         Code:        p.Code,
         Status:      p.Status,
         Description: p.Description,
-        TotalTask:   0,
     }
-    return data
 }
 
 func prepareDataToRequest(p *pb.Project) *model.Project {
@@ -36,7 +34,7 @@ func prepareDataToRequest(p *pb.Project) *model.Project {
     }
 }
 
-func getModel(id uint, c *model.Project) *model.Project {
+func getModel(c *model.Project) *model.Project {
     return &model.Project{
         Model: gorm.Model{
             ID:        c.ID,

@@ -12,7 +12,7 @@ import (
 )
 
 func prepareDataToResponse(t *model.Task) *pb.Task {
-     return &pb.Task{
+    return &pb.Task{
         Id:          fmt.Sprintf("%d", t.ID),
         ProjectId:   fmt.Sprintf("%d", t.ProjectID),
         Name:        t.Name,
@@ -32,7 +32,7 @@ func prepareDataToRequest(p *pb.Task) *model.Task {
     }
 }
 
-func getModel(id uint, c *model.Task) *model.Task {
+func getModel(c *model.Task) *model.Task {
     return &model.Task{
         Model: gorm.Model{
             ID:        c.ID,
