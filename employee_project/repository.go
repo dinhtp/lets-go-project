@@ -17,8 +17,9 @@ func NewRepository(db *gorm.DB) *Repository {
     return &Repository{db: db}
 }
 
-func (r *Repository) CreatOne(employeeId int, projectId int, ep *model.EmployeeProject) (*model.EmployeeProject, error) {
-    query := r.db.Model(&model.EmployeeProject{}).FirstOrCreate(&ep, "employee_id = ? AND project_id = ?", employeeId, projectId)
+func (r *Repository) CreatOne(ep *model.EmployeeProject) (*model.EmployeeProject, error) {
+
+    query := r.db.Where(ep).FirstOrCreate(&ep)
 
     if err := query.Error; nil != err {
         return nil, err

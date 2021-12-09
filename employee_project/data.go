@@ -2,7 +2,6 @@ package employee_project
 
 import (
     "fmt"
-    "strconv"
 
     "gorm.io/gorm"
 
@@ -18,9 +17,7 @@ func prepareDataToResponse(p *model.EmployeeProject) *pb.Employee_Project {
     }
 }
 
-func prepareDataToRequest(p *pb.Employee_Project) *model.EmployeeProject {
-    employeeId, _ := strconv.Atoi(p.GetEmployeeId())
-    projectId, _ := strconv.Atoi(p.GetProjectId())
+func prepareDataToRequest(employeeId int, projectId int) *model.EmployeeProject {
     return &model.EmployeeProject{
         Model:      gorm.Model{},
         EmployeeID: uint(employeeId),

@@ -25,7 +25,7 @@ func (s Service) Create(ctx context.Context, r *pb.Employee_Project) (*pb.Employ
 
     employeeId, _ := strconv.Atoi(r.GetEmployeeId())
     projectId, _ := strconv.Atoi(r.GetProjectId())
-    employeeProject, err := NewRepository(s.db).CreatOne(employeeId, projectId, prepareDataToRequest(r))
+    employeeProject, err := NewRepository(s.db).CreatOne(prepareDataToRequest(employeeId,projectId))
     if nil != err {
         return nil, err
     }
