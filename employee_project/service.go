@@ -2,8 +2,6 @@ package employee_project
 
 import (
     "context"
-    "strconv"
-
     "github.com/gogo/protobuf/types"
     "gorm.io/gorm"
 
@@ -23,9 +21,7 @@ func (s Service) Create(ctx context.Context, r *pb.Employee_Project) (*pb.Employ
         return nil, err
     }
 
-    employeeId, _ := strconv.Atoi(r.GetEmployeeId())
-    projectId, _ := strconv.Atoi(r.GetProjectId())
-    employeeProject, err := NewRepository(s.db).CreatOne(prepareDataToRequest(employeeId,projectId))
+    employeeProject, err := NewRepository(s.db).CreatOne(prepareDataToRequest(r))
     if nil != err {
         return nil, err
     }
@@ -38,7 +34,7 @@ func (s Service) Delete(ctx context.Context, r *pb.Employee_Project) (*types.Emp
         return nil, err
     }
 
-    err := NewRepository(s.db).DeleteOne(r)
+    err := NewRepository(s.db).DeleteOne(prepareDataToRequest(r))
     if nil != err {
         return nil, err
     }
