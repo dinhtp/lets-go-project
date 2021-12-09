@@ -74,7 +74,7 @@ func (s Service) List(ctx context.Context, r *pb.ListTaskRequest) (*pb.ListTaskR
     if nil != err {
         return nil, err
     }
-    for _,task := range tasks {
+    for _, task := range tasks {
         list = append(list, prepareDataToResponse(task))
     }
 

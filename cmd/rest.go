@@ -15,6 +15,7 @@ import (
     "github.com/spf13/viper"
     "google.golang.org/grpc"
 
+    epb "github.com/dinhtp/lets-go-pbtype/employee_project"
     ppb "github.com/dinhtp/lets-go-pbtype/project"
     tpb "github.com/dinhtp/lets-go-pbtype/task"
 )
@@ -91,6 +92,11 @@ func initializeGatewayService(ctx context.Context, gw *runtime.ServeMux, endpoin
     taskGwErr := tpb.RegisterTaskServiceHandlerFromEndpoint(ctx, gw, endpoint, opts)
     if nil != taskGwErr {
         fmt.Println(taskGwErr)
+        os.Exit(1)
+    }
+    employeeProjectGwErr := epb.RegisterEmployeeServiceHandlerFromEndpoint(ctx, gw, endpoint, opts)
+    if nil != employeeProjectGwErr {
+        fmt.Println(employeeProjectGwErr)
         os.Exit(1)
     }
 }
