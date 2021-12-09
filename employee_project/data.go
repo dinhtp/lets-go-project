@@ -10,7 +10,7 @@ import (
     "github.com/dinhtp/lets-go-project/model"
 )
 
-func prepareDataToResponse(p *model.Employee_Project) *pb.Employee_Project {
+func prepareDataToResponse(p *model.EmployeeProject) *pb.Employee_Project {
     return &pb.Employee_Project{
         Id:         fmt.Sprintf("%d", p.ID),
         EmployeeId: fmt.Sprintf("%d", p.EmployeeID),
@@ -18,10 +18,10 @@ func prepareDataToResponse(p *model.Employee_Project) *pb.Employee_Project {
     }
 }
 
-func prepareDataToRequest(p *pb.Employee_Project) *model.Employee_Project {
+func prepareDataToRequest(p *pb.Employee_Project) *model.EmployeeProject {
     employeeId, _ := strconv.Atoi(p.GetEmployeeId())
     projectId, _ := strconv.Atoi(p.GetProjectId())
-    return &model.Employee_Project{
+    return &model.EmployeeProject{
         Model:      gorm.Model{},
         EmployeeID: uint(employeeId),
         ProjectID:  uint(projectId),

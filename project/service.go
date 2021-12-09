@@ -55,9 +55,16 @@ func (s Service) Get(ctx context.Context, r *pb.OneProjectRequest) (*pb.Project,
 
     id, _ := strconv.Atoi(r.GetId())
     project, err := NewRepository(s.db).FindOne(id)
-    mapTask, err := NewRepository(s.db).countTotalTask(id)
-    list, err := NewRepository(s.db).listAllEmployee(id)
+    if nil != err {
+        return nil, err
+    }
 
+    mapTask, err := NewRepository(s.db).countTotalTask(id)
+    if nil != err {
+        return nil, err
+    }
+
+    list, err := NewRepository(s.db).listAllEmployee(id)
     if nil != err {
         return nil, err
     }
@@ -76,6 +83,10 @@ func (s Service) List(ctx context.Context, r *pb.ListProjectRequest) (*pb.ListPr
     }
 
     projects, count, err := NewRepository(s.db).ListAll(r)
+    if nil != err {
+        return nil, err
+    }
+
     mapTask, err := NewRepository(s.db).countTotalTask(0)
     if nil != err {
         return nil, err
@@ -103,7 +114,6 @@ func (s Service) Delete(ctx context.Context, r *pb.OneProjectRequest) (*types.Em
 
     id, _ := strconv.Atoi(r.GetId())
     err := NewRepository(s.db).DeleteOne(id)
-
     if nil != err {
         return nil, err
     }

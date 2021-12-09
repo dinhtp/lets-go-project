@@ -2,7 +2,7 @@ package model
 
 import "gorm.io/gorm"
 
-type Employee_Project struct {
+type EmployeeProject struct {
     gorm.Model
     EmployeeID uint
     ProjectID  uint

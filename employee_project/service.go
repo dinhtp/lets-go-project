@@ -23,23 +23,14 @@ func (s Service) Create(ctx context.Context, r *pb.Employee_Project) (*pb.Employ
         return nil, err
     }
 
-    employeeid, _ := strconv.Atoi(r.GetEmployeeId())
-    projectid, _ := strconv.Atoi(r.GetProjectId())
-    empl_pro, duplicate, err := NewRepository(s.db).checkDuplicateOne(uint(employeeid), uint(projectid))
-
-    if nil != err {
-        return nil, err
-    }
-    if duplicate == 1 {
-        return prepareDataToResponse(empl_pro), nil
-    }
-
-    employee_project, err := NewRepository(s.db).CreatOne(prepareDataToRequest(r))
+    employeeId, _ := strconv.Atoi(r.GetEmployeeId())
+    projectId, _ := strconv.Atoi(r.GetProjectId())
+    employeeProject, err := NewRepository(s.db).CreatOne(employeeId, projectId, prepareDataToRequest(r))
     if nil != err {
         return nil, err
     }
 
-    return prepareDataToResponse(employee_project), nil
+    return prepareDataToResponse(employeeProject), nil
 }
 
 func (s Service) Delete(ctx context.Context, r *pb.Employee_Project) (*types.Empty, error) {
