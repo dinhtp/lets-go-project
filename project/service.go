@@ -2,13 +2,17 @@ package project
 
 import (
     "context"
+    ee "github.com/dinhtp/lets-go-company/model"
     "math"
     "strconv"
 
     "github.com/gogo/protobuf/types"
     "gorm.io/gorm"
 
+    ec "github.com/dinhtp/lets-go-company/employee"
+    ep "github.com/dinhtp/lets-go-pbtype/employee"
     pb "github.com/dinhtp/lets-go-pbtype/project"
+    "github.com/dinhtp/lets-go-project/model"
 )
 
 type Service struct {
@@ -53,43 +57,123 @@ func (s Service) Get(ctx context.Context, r *pb.OneProjectRequest) (*pb.Project,
         return nil, err
     }
 
+    var listAllEmployee []*ep.Employee
+    var fault error
+
+    projectChanel := make(chan *model.Project, 1)
+    mapChanel := make(chan map[uint]uint32, 1)
+    listChanel := make(chan []*ee.Employee, 1)
+    errorChanel := make(chan error, 3)
+
     id, _ := strconv.Atoi(r.GetId())
-    project, err := NewRepository(s.db).FindOne(id)
-    if nil != err {
-        return nil, err
+
+    go func() {
+        project, err := NewRepository(s.db).FindOne(id)
+        if nil != err {
+            projectChanel <- nil
+            errorChanel <- err
+            return
+        }
+        projectChanel <- project
+        errorChanel <- nil
+    }()
+
+    go func() {
+        mapTask, err := NewRepository(s.db).countTotalTask(id)
+        if nil != err{
+            mapChanel <- nil
+            errorChanel <- err
+            return
+        }
+        mapChanel <- mapTask
+        errorChanel <- nil
+    }()
+
+    go func() {
+        list, err := NewRepository(s.db).listAllEmployeeByObject(id)
+        if nil != err {
+            listChanel <- nil
+            errorChanel <- err
+            return
+        }
+        listChanel <- list
+        errorChanel <- nil
+    }()
+
+    project := <-projectChanel
+    mapTask := <-mapChanel
+    list := <-listChanel
+
+    for i:=0 ;i<len(errorChanel);i++{
+        if err := <- errorChanel;err != nil{
+            fault = err
+        }
     }
 
-    mapTask, err := NewRepository(s.db).countTotalTask(id)
-    if nil != err {
-        return nil, err
+    if nil != fault {
+        return nil, fault
     }
 
-    list, err := NewRepository(s.db).listAllEmployee(id)
-    if nil != err {
-        return nil, err
+    for _, inner := range list {
+        listAllEmployee = append(listAllEmployee, ec.PrepareDataToResponse(inner))
     }
 
     projectData := prepareDataToResponse(project)
     projectData.TotalTask = mapTask[uint(id)]
-    projectData.EmployeeIdInProject = list
+    projectData.EmployeeInProject = listAllEmployee
 
     return projectData, nil
 }
 
 func (s Service) List(ctx context.Context, r *pb.ListProjectRequest) (*pb.ListProjectResponse, error) {
-    var list []*pb.Project
     if err := validateList(r); nil != err {
         return nil, err
     }
 
-    projects, count, err := NewRepository(s.db).ListAll(r)
-    if nil != err {
-        return nil, err
+    var list []*pb.Project
+    var fault error
+
+    projectsChanel := make(chan []*model.Project, 1)
+    countChanel := make(chan int64, 1)
+    mapChanel := make(chan map[uint]uint32, 1)
+    errorChanel := make(chan error, 2)
+
+    go func() {
+        projects, count, err := NewRepository(s.db).ListAll(r)
+        if err != nil {
+            errorChanel <- err
+            projectsChanel <- nil
+            countChanel <- 0
+            return
+        }
+        projectsChanel <- projects
+        countChanel <- count
+        errorChanel <- nil
+    }()
+
+    go func() {
+        mapTask, err := NewRepository(s.db).countTotalTask(0)
+        if err != nil {
+            errorChanel <- err
+            mapChanel <- nil
+            return
+        }
+        mapChanel <- mapTask
+        errorChanel <- nil
+    }()
+
+    projects := <-projectsChanel
+    count := <-countChanel
+    mapTask := <-mapChanel
+
+    for i := 0; i < len(errorChanel); i++ {
+        if err := <-errorChanel;err != nil{
+            fault = err
+        }
     }
 
-    mapTask, err := NewRepository(s.db).countTotalTask(0)
-    if nil != err {
-        return nil, err
+    if nil != fault {
+        return nil, fault
     }
 
     for _, project := range projects {

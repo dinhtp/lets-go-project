@@ -2,10 +2,12 @@ package project
 
 import (
     "fmt"
-    "gorm.io/gorm"
     "strconv"
     "strings"
 
+    "gorm.io/gorm"
+
+    ee "github.com/dinhtp/lets-go-company/model"
     pb "github.com/dinhtp/lets-go-pbtype/project"
     "github.com/dinhtp/lets-go-project/model"
 )
@@ -134,7 +136,7 @@ func (r *Repository) countTotalTask(id int) (map[uint]uint32, error) {
     return totalCount, nil
 }
 
-func (r *Repository) listAllEmployee(id int) ([]uint32, error) {
+func (r *Repository) listAllEmployeeByID(id int) ([]uint32, error) {
     var listIdEmployee []uint32
 
     query := r.db.Model(&model.EmployeeProject{}).Select("employee_id").Where("project_id = ?", id).Find(&listIdEmployee)
@@ -143,4 +145,25 @@ func (r *Repository) listAllEmployee(id int) ([]uint32, error) {
     }
 
     return listIdEmployee, nil
+}
+
+func (r *Repository) listAllEmployeeByObject(id int) ([]*ee.Employee, error) {
+    var listIdEmployeeByID []uint32
+    var listEmployeeByObject []*ee.Employee
+
+    query := r.db.Model(&model.EmployeeProject{}).Select("employee_id").Where("project_id = ?", id).Find(&listIdEmployeeByID)
+    if err := query.Error; nil != err {
+        return nil, err
+    }
+
+    for _, list := range listIdEmployeeByID {
+        var employee *ee.Employee
+        subQuery := r.db.Model(&ee.Employee{}).Select("*").Where("id = ?", list).Find(&employee)
+        if err := subQuery.Error; nil != err {
+            return nil, err
+        }
+        listEmployeeByObject = append(listEmployeeByObject, employee)
+    }
+
+    return listEmployeeByObject, nil
 }
