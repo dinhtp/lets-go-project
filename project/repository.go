@@ -156,13 +156,9 @@ func (r *Repository) listAllEmployeeByObject(id int) ([]*ee.Employee, error) {
         return nil, err
     }
 
-    for _, list := range listIdEmployeeByID {
-        var employee *ee.Employee
-        subQuery := r.db.Model(&ee.Employee{}).Select("*").Where("id = ?", list).Find(&employee)
-        if err := subQuery.Error; nil != err {
-            return nil, err
-        }
-        listEmployeeByObject = append(listEmployeeByObject, employee)
+    subQuery := r.db.Model(&ee.Employee{}).Select("*").Where("id IN ?", listIdEmployeeByID).Find(&listEmployeeByObject)
+    if err := subQuery.Error; nil != err {
+        return nil,err
     }
 
     return listEmployeeByObject, nil

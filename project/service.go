@@ -2,7 +2,6 @@ package project
 
 import (
     "context"
-    ee "github.com/dinhtp/lets-go-company/model"
     "math"
     "strconv"
 
@@ -12,6 +11,7 @@ import (
     ec "github.com/dinhtp/lets-go-company/employee"
     ep "github.com/dinhtp/lets-go-pbtype/employee"
     pb "github.com/dinhtp/lets-go-pbtype/project"
+    ee "github.com/dinhtp/lets-go-company/model"
     "github.com/dinhtp/lets-go-project/model"
 )
 
