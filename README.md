@@ -1,6 +1,6 @@
 # Let's GO Project
 
-## What to do
+## I. What to do
 In this service, you will develop a backend server side functions that handle the **project** and **task** API
 resources.This service will contain 2 sub-services which are the Rest and gRPC service.
 Rest service will handle the http requests while gRPC will handle the rpc request to the API resources.
@@ -14,9 +14,9 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
 **The relationship between task and employee can be referred below:** \
 ![task-employee ERD](./asset/task-employee.png)
 
-## API Output
-### Project API Output
-#### Get a project by ID.
+## II. API Output
+### 1. Project API Output
+#### 1.1. Get a project by ID.
     - URL: [GET] {project_url}/go/project/{id}
     - Response:
         {
@@ -30,7 +30,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
             "created_at": "string",
             "updated_at": "string"
         }
-#### Create a project for a specific company.
+#### 1.2. Create a project for a specific company.
     - URL: [POST] {project_url}/go/company/{company_id}/project
     - Payload:
         {
@@ -52,7 +52,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
             "created_at": "string",
             "updated_at": "string"
         }
-#### Update a project by ID.
+#### 1.3. Update a project by ID.
     - URL: [PUT] {project_url}/go/project/{id}
     - Payload:
         {
@@ -75,10 +75,10 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
             "created_at": "string",
             "updated_at": "string"
         }
-#### Delete a project by ID.
+#### 1.4. Delete a project by ID.
     - URL: [DELETE] {project_url}/go/project/{id}
     - Status: 200
-#### List project by company id, page, limit, status and filter by "name", "code".
+#### 1.5. List project by company id, page, limit, status and filter by "name", "code".
     - URL: [GET] {project_url}/go/company/{company_id}/projects
     - Query: ?page=0&limit=0&status=string&search_value=string&search_fields=name,code
     - Response:
@@ -101,7 +101,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
             "page": 0,
             "limit": 0,
         }
-#### Assign an employee to a project.
+#### 1.6. Assign an employee to a project.
     - URL: [POST] {project_url}/go/project-assign
     - Payload:
         {
@@ -110,7 +110,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
         }
     - Status: 200
     - Assign Condition: project must has status of "active"
-#### Dismiss an employee from a project.
+#### 1.7. Dismiss an employee from a project.
     - URL: [POST] {project_url}/go/project-dismiss
     - Payload:
         {
@@ -119,7 +119,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
         }
     - Status: 200
     - Dismiss Condition: employee must not have any "active" task in project
-#### List employee by a specific project id
+#### 1.8. List employee by a specific project id
     - URL: [GET] {project_url}/go/project-employees/{project_id}
     - Response:
         {
@@ -140,9 +140,8 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
             "total_count": 0,
         }
 
-
-### Task API Output
-#### Get a task by ID.
+### 2. Task API Output
+#### 2.1. Get a task by ID.
     - URL: [GET] {project_url}/go/task/{id}
     - Response:
         {
@@ -154,7 +153,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
             "created_at": "string",
             "updated_at": "string"
         }
-#### Create a task for a specific project.
+#### 2.2. Create a task for a specific project.
     - URL: [POST] {project_url}/go/project/{project_id}/task
     - Payload:
         {
@@ -173,7 +172,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
             "created_at": "string",
             "updated_at": "string"
         }
-#### Update a task by ID.
+#### 2.3. Update a task by ID.
     - URL: [PUT] {project_url}/go/task/{id}
     - Payload:
         {
@@ -193,10 +192,10 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
             "created_at": "string",
             "updated_at": "string"
         }
-#### Delete a task by ID.
+#### 2.4. Delete a task by ID.
     - URL: [DELETE] {project_url}/go/task/{id}
     - Status: 200
-#### List task by project id, page, limit, status and filter by "name".
+#### 2.5. List task by project id, page, limit, status and filter by "name".
     - URL: [GET] {project_url}/go/project/{project_id}/tasks
     - Query: ?page=0&limit=0&status=string&search_value=string&search_fields=name
     - Response:
@@ -218,7 +217,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
             "page": 0,
             "limit": 0,
         }
-#### Assign a task to an employee.
+#### 2.6. Assign a task to an employee.
     - URL: [POST] {project_url}/go/task-assign
     - Payload:
         {
@@ -227,7 +226,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
         }
     - Status: 200
     - Assign Condition: task must has status of "to_do" and employee must be assigned to the task project
-#### Un-assign a task from an employee.
+#### 2.7. Un-assign a task from an employee.
     - URL: [POST] {project_url}/go/task-unassign
     - Payload:
         {
@@ -236,7 +235,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
         }
     - Status: 200
     - Unassign Condition: Task must not have a status of "doing"
-#### List task by a specific employee id and task status
+#### 2.8. List task by a specific employee id and task status
     - URL: [GET] {project_url}/go/employee-tasks/{employee_id}
     - Query: ?task_status=string
     - Response:
