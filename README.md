@@ -1,5 +1,6 @@
 # Let's GO Project
 
+
 ## I. What to do
 In this service, you will develop a backend server side functions that handle the **project** and **task** API
 resources.This service will contain 2 sub-services which are the Rest and gRPC service.
@@ -13,6 +14,7 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
 
 **The relationship between task and employee can be referred below:** \
 ![task-employee ERD](./asset/task-employee.png)
+
 
 ## II. API Output
 ### 1. Project API Output
