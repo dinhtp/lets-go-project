@@ -23,7 +23,7 @@ func validateUpdate(p *pb.Project) error {
     }
 
     if p.GetCompanyId() == "" {
-        return status.Error(codes.InvalidArgument, "Invalid Company ID")
+        return status.Error(codes.InvalidArgument, "Company ID is required")
     }
 
     return validateCreate(p)
