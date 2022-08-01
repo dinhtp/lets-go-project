@@ -257,4 +257,36 @@ Rest service will handle the http requests while gRPC will handle the rpc reques
             "total_count": 0,
         }
 
+
+## III. Dial GRPC Example
+```go
+package company
+
+import (
+    "context"
+
+    "google.golang.org/grpc"
+
+    pb "github.com/dinhtp/lets-go-pbtype/company"
+)
+
+func dialGrpc(companyGrpcAddress, companyId string) (*pb.Company, error) {
+    // create grpc connection
+    conn, err := grpc.Dial(companyGrpcAddress, grpc.WithInsecure())
+    if nil != err {
+        return nil, err
+    }
+
+    // close the connection before exit the function
+    defer conn.Close()
+
+    // create company service client
+    service := pb.NewCompanyServiceClient(conn)
+
+    // invoke company service server function
+    result, err := service.Get(context.Background(), &pb.OneCompanyRequest{Id: companyId})
+
+    return result, err
+}
+```
 > NOTE: DO NOT commit changes directly into the master branch.
